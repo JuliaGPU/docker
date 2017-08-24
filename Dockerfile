@@ -29,6 +29,8 @@ RUN make all -j$(nproc) \
         JULIA_CPU_TARGET=x86-64 && \
     rm -rf deps/scratch deps/srccache usr-staging
 
+WORKDIR /opt/julia/usr/bin
+
 # install packages (some will fail to build, due to no GPU available during `docker build`)
 RUN ./julia -e 'Pkg.add.(["CUDAnative", "CuArrays"])' && \
     rm -rf /root/.julia/lib
