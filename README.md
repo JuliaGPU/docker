@@ -20,14 +20,12 @@ Installation
 2. Configure packages
 
     Because Docker doesn't have access to your GPU during image build, you first need to
-    configure the packages and commit the resulting image:
+    initialize the container and commit the resulting image:
 
     ```
-    nvidia-docker run -it maleadt/juliagpu -e "Pkg.build(); recompile()"
-    docker commit --change='CMD ["--"]' $(docker ps -lq) local/juliagpu
+    nvidia-docker run -it maleadt/juliagpu
+    docker commit $(docker ps -lq) local/juliagpu
     ```
-
-    (`recompile()` as per JuliaLang/julia#16409, `["--"]` due to moby/moby#3465)
 
 
 Usage
