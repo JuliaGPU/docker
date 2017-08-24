@@ -52,6 +52,12 @@ Hello, World!
 Development
 -----------
 
+Members of the JuliaGPU organization can force a rebuild of the image at the [JuliaGPU
+CI](http://ci.maleadt.net:8010/#/builders?tags=%2BDocker). Note that all included packages
+need to pass tests, or the image won't be pushed.
+
+Manual instructions:
+
 ```
 $ docker build -t maleadt/juliagpu .
 $ docker push maleadt/juliagpu
