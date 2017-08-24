@@ -17,10 +17,11 @@ Installation
 
 1. Pull the layers: `docker pull maleadt/juliagpu`
 
-2. Configure packages
+2. Initialize the container
 
     Because Docker doesn't have access to your GPU during image build, you first need to
-    initialize the container and commit the resulting image:
+    initialize the container (build dependencies, precompile packages) and commit the
+    resulting image:
 
     ```
     nvidia-docker run -it maleadt/juliagpu
@@ -31,7 +32,7 @@ Installation
 Usage
 -----
 
-The container is now ready for use:
+The container is now ready to use:
 
 ```
 nvidia-docker run -it local/juliagpu
