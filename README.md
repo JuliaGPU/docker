@@ -19,31 +19,32 @@ Prerequisites
 * [nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
 
 
-Installation
-------------
-
-1. Pull the layers: `docker pull maleadt/juliagpu`
-
-2. Initialize the container
-
-    Because Docker doesn't have access to your GPU during image build, you first need to
-    initialize the container (build dependencies, precompile packages) and commit the
-    resulting image:
-
-    ```
-    nvidia-docker run -it maleadt/juliagpu
-    docker commit $(docker ps -lq) local/juliagpu
-    ```
-
-
 Usage
 -----
 
-The container is now ready to use:
+Pull and start the container as follows:
 
 ```
-nvidia-docker run -it local/juliagpu
-julia> Pkg.test("CUDAnative")
+$ docker pull maleadt/juliagpu
+$ nvidia-docker run -it maleadt/juliagpu
+```
+
+The container will perform first time setup, and prompt you to commit the result:
+
+```
+INFO: Performing first time setup
+...
+INFO: Done! Now commit this using:
+      $ docker commit CONTAINER_ID local/juliagpu
+      and use the local/juliagpu tag instead.
+```
+
+Commit and use that result as prompted:
+
+```
+$ docker commit CONTAINER_ID local/juliagpu
+$ nvidia-docker run -it local/juliagpu
+julia> ...
 ```
 
 Note that the container has Julia as entry point, and thus can be used as if it were a
@@ -56,14 +57,24 @@ Hello, World!
 ```
 
 
+Troubleshooting
+---------------
+
+* Did you run the container with `nvidia-docker`?
+* Some packages might support a debugging mode; run again with `DEBUG=1` and file an issue.
+
+
 Development
 -----------
 
 Members of the JuliaGPU organization can force a rebuild of the image at the [JuliaGPU
-CI](http://ci.maleadt.net:8010/#/builders?tags=%2BDocker). Note that all included packages
-need to pass tests, or the image won't be pushed.
+CI](http://ci.maleadt.net:8010/#/builders?tags=%2BDocker). Apart from that, the image is
+rebuilt weekly, including new versions of Julia and any included packages.
 
-Manual instructions:
+If you want to include a new package, create a PR modifying the REQUIRE file. Note that all
+included packages need to pass tests, or the image won't be pushed.
+
+Manual build instructions:
 
 ```
 $ docker build -t maleadt/juliagpu .
