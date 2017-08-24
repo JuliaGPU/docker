@@ -10,13 +10,19 @@ function recompile()
     end
 end
 
+# first time setup
 if !ispath("/configured") && !ispath("/configuring")
-    # this is the container's first run, build all packages and create a compile cache
     info("Performing first time setup")
-    touch("/configuring")
-    Pkg.build()
-    recompile()
-    rm("/configuring")
-    touch("/configured")
+    try
+        touch("/configuring")
+        Pkg.build()
+        recompile()
+        touch("/configured")
+    catch
+        warn("Setup failed, please re-run with DEBUG=1")
+        rethrow()
+    finally
+        rm("/configuring")
+    end
     exit()
 end
