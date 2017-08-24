@@ -12,7 +12,9 @@ RUN apt-get update && \
                     # basic stuff
                     build-essential ca-certificates \
                     # Julia
-                    cmake curl gfortran git m4 python && \
+                    cmake curl gfortran git m4 python \
+                    # GPUArrays
+                    libclfft-bin libclblas-bin && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
