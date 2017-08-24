@@ -3,23 +3,56 @@ JuliaGPU docker recipes
 
 *Docker recipes for Julia builds with JuliaGPU packages.*
 
-Usage
------
 
-You need [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) to run this image. After
-installation, pull the image using `docker pull maleadt/gpu`.
+Prerequisites
+-------------
+
+* Docker
+* NVIDIA drivers on your host system
+* [nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
+
+
+Installation
+------------
+
+### Pull the layers: `docker pull maleadt/juliagpu`
+
+### Configure packages
 
 Because Docker doesn't have access to your GPU during image build, you need to configure the
-packages and commit the resulting image before first use:
+packages and commit the resulting image:
 
 ```
-nvidia-docker run -it maleadt/juliagpu julia/usr/bin/julia -e "Pkg.build()"
-docker commit --change='CMD julia/usr/bin/julia' $(docker ps -lq) maleadt/juliagpu
+nvidia-docker run -it maleadt/juliagpu -e "Pkg.build(); recompile()"
+docker commit --change='CMD ["--"]' $(docker ps -lq) local/juliagpu
 ```
+
+(`recompile()` as per JuliaLang/julia#16409, `["--"]` due to moby/moby#3465)
+
+
+Usage
+-----
 
 The container is now ready for use:
 
 ```
-nvidia-docker run -it maleadt/juliagpu
+nvidia-docker run -it local/juliagpu
 julia> Pkg.test("CUDAnative")
+```
+
+Note that the container has Julia as entry point, and thus can be used as a regular binary:
+
+```
+$ alias juliagpu='nvidia-docker run -it local/juliagpu'
+$ juliagpu -e 'println("Hello, World!")'
+Hello, World!
+```
+
+
+Development
+-----------
+
+```
+$ docker build -t maleadt/juliagpu .
+$ docker push maleadt/juliagpu
 ```
