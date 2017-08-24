@@ -2,6 +2,9 @@ FROM nvidia/cuda:8.0-devel-ubuntu16.04
 
 MAINTAINER Tim Besard <tim.besard@gmail.com>
 
+
+## checkout
+
 WORKDIR /opt
 
 RUN apt-get update && \
@@ -22,6 +25,9 @@ RUN git clone https://github.com/JuliaLang/julia.git && \
     cd julia && \
     git checkout v0.6.0
 
+
+## build
+
 WORKDIR /opt/julia
 
 RUN make all -j$(nproc) \
@@ -29,10 +35,17 @@ RUN make all -j$(nproc) \
         JULIA_CPU_TARGET=x86-64 && \
     rm -rf deps/scratch deps/srccache usr-staging
 
+
+## packages
+
 WORKDIR /opt/julia/usr/bin
 
+RUN ./julia -e "Pkg.init()"
+
+ADD REQUIRE /root/.julia/v0.6
+
 # install packages (some will fail to build, due to no GPU available during `docker build`)
-RUN ./julia -e 'Pkg.add.(["CUDAnative", "CuArrays"])' && \
+RUN ./julia -e 'Pkg.resolve()' && \
     rm -rf /root/.julia/lib
 
 ADD .juliarc.jl /root/
