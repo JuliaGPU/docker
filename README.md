@@ -15,19 +15,19 @@ Prerequisites
 Installation
 ------------
 
-### Pull the layers: `docker pull maleadt/juliagpu`
+1. Pull the layers: `docker pull maleadt/juliagpu`
 
-### Configure packages
+2. Configure packages
 
-Because Docker doesn't have access to your GPU during image build, you need to configure the
-packages and commit the resulting image:
+    Because Docker doesn't have access to your GPU during image build, you first need to
+    configure the packages and commit the resulting image:
 
-```
-nvidia-docker run -it maleadt/juliagpu -e "Pkg.build(); recompile()"
-docker commit --change='CMD ["--"]' $(docker ps -lq) local/juliagpu
-```
+    ```
+    nvidia-docker run -it maleadt/juliagpu -e "Pkg.build(); recompile()"
+    docker commit --change='CMD ["--"]' $(docker ps -lq) local/juliagpu
+    ```
 
-(`recompile()` as per JuliaLang/julia#16409, `["--"]` due to moby/moby#3465)
+    (`recompile()` as per JuliaLang/julia#16409, `["--"]` due to moby/moby#3465)
 
 
 Usage
@@ -40,7 +40,8 @@ nvidia-docker run -it local/juliagpu
 julia> Pkg.test("CUDAnative")
 ```
 
-Note that the container has Julia as entry point, and thus can be used as a regular binary:
+Note that the container has Julia as entry point, and thus can be used as if it were a
+regular binary:
 
 ```
 $ alias juliagpu='nvidia-docker run -it local/juliagpu'
