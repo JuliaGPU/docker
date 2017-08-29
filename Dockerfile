@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-devel-ubuntu16.04
+FROM nvidia/cuda:8.0-cudnn7-devel-ubuntu16.04
 
 MAINTAINER Tim Besard <tim.besard@gmail.com>
 
@@ -8,16 +8,11 @@ MAINTAINER Tim Besard <tim.besard@gmail.com>
 WORKDIR /opt
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        ca-certificates \
-        cmake \
-        curl \
-        gfortran \
-        git \
-        m4 \
-        python \
-        && \
+    apt-get install --yes --no-install-recommends \
+                    # basic stuff
+                    build-essential ca-certificates \
+                    # Julia
+                    cmake curl gfortran git m4 python && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
