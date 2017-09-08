@@ -43,6 +43,6 @@ ADD REQUIRE /root/.julia/v0.6
 RUN ./julia -e 'Pkg.resolve()' && \
     rm -rf /root/.julia/lib
 
-ADD .juliarc.jl /root/
+COPY juliarc.jl /root/.juliarc.jl
 
 ENTRYPOINT ["./julia"]
