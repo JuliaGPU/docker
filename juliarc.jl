@@ -16,6 +16,8 @@ if !ispath("/configured") && !ispath("/configuring")
     try
         touch("/configuring")
         Pkg.build()
+
+        info("Precompiling packages")
         recompile()
         touch("/configured")
     catch
