@@ -26,7 +26,7 @@ Pull and start the container as follows:
 
 ```
 $ docker pull maleadt/juliagpu
-$ nvidia-docker run -it maleadt/juliagpu
+$ docker run --runtime=nvidia -it maleadt/juliagpu
 ```
 
 The container will perform first time setup, and prompt you to commit the result:
@@ -43,7 +43,7 @@ Commit and use that result as prompted:
 
 ```
 $ docker commit CONTAINER_ID local/juliagpu
-$ nvidia-docker run -it local/juliagpu
+$ docker run --runtime=nvidia -it local/juliagpu
 julia> ...
 ```
 
@@ -51,7 +51,7 @@ Note that the container has Julia as entry point, and thus can be used as if it 
 regular binary:
 
 ```
-$ alias juliagpu='nvidia-docker run -it local/juliagpu'
+$ alias juliagpu='docker run --runtime=nvidia -it local/juliagpu'
 $ juliagpu -e 'println("Hello, World!")'
 Hello, World!
 ```
@@ -60,7 +60,7 @@ Hello, World!
 Troubleshooting
 ---------------
 
-* Did you run the container with `nvidia-docker`?
+* Did you run the container with `--runtime=nvidia`?
 * Some packages might support a debugging mode; run again with `DEBUG=1` and file an issue.
 
 
