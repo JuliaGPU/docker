@@ -20,7 +20,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/JuliaLang/julia.git && \
     cd julia && \
-    git checkout v0.6.0
+    git checkout v0.6.2
 
 
 ## build
