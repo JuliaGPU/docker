@@ -61,7 +61,7 @@ Troubleshooting
 ---------------
 
 * Did you run the container with `--runtime=nvidia`?
-* Some packages might support a debugging mode; run again with `DEBUG=1` and file an issue.
+* Some packages might support a debugging mode; run again with `DEBUG=true` and file an issue.
 
 
 Development
