@@ -32,3 +32,13 @@ if !ispath("/configured") && !ispath("/configuring")
               and use the local/juliagpu container instead.""")
     exit()
 end
+
+atreplinit() do repl
+    println("""
+        Welcome to the JuliaGPU Docker environment.
+
+        If you want changes to persist (eg. after installing a package), run:
+        \$ docker commit $(gethostname()) local/juliagpu
+        and use the local/juliagpu container instead.
+        """)
+end
