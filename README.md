@@ -26,7 +26,7 @@ Pull and start the container as follows:
 
 ```
 $ docker pull maleadt/juliagpu
-$ docker run --runtime=nvidia -v $PKG:/pkg -v $PWD:/data -it maleadt/juliagpu
+$ docker run --runtime=nvidia -v $PKG:/pkg -it maleadt/juliagpu
 ```
 
 Replace `$PKG` with a named volume (see `docker volume create`), or the path to
@@ -37,11 +37,11 @@ and configured for your system. This will take a while, but the results will be
 persistent across invocations (on the condition you keep your package volume or
 directory intact).
 
-Mounting `$PWD` to `/data` makes your current directory available to the
-container.
+The container starts in `/data`, which you can mount in order to access files
+from your host.
 
 Note that the container has Julia as entry point, and thus can be used as if it were a
-regular binary:
+regular binary (especially powerful in combination with `$PWD` mounted as `/data`):
 
 ```
 $ alias juliagpu='docker run --runtime=nvidia -v $PKG:/pkg -v $PWD:/data -it maleadt/juliagpu'
