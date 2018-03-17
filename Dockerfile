@@ -37,14 +37,25 @@ RUN make all -j$(nproc) \
 
 WORKDIR /opt/julia/usr/bin
 
+ENV JULIA_PKGDIR /template
+
 RUN ./julia -e "Pkg.init()"
 
-ADD REQUIRE /root/.julia/v0.6
+ADD REQUIRE /template/v0.6
 
 # install packages (some will fail to build, due to no GPU available during `docker build`)
 RUN ./julia -e 'Pkg.resolve()' && \
-    rm -rf /root/.julia/lib
+    rm -rf /template/lib
+
+
+## execution
 
 COPY juliarc.jl /root/.juliarc.jl
 
-ENTRYPOINT ["./julia"]
+VOLUME /pkg
+ENV JULIA_PKGDIR /pkg
+
+VOLUME /data
+WORKDIR /data
+
+ENTRYPOINT ["/opt/julia/usr/bin/julia"]

@@ -26,33 +26,31 @@ Pull and start the container as follows:
 
 ```
 $ docker pull maleadt/juliagpu
-$ docker run --runtime=nvidia -it maleadt/juliagpu
+$ docker run --runtime=nvidia -v $PKG:/pkg -it maleadt/juliagpu
 ```
 
-The container will perform first time setup, and prompt you to commit the result:
+Replace `$PKG` with a named volume (see `docker volume create`), or the path to
+a local directory. When the container starts, and `/pkg` does not contain an
+initialized package installation, a pre-configured installation of the packages
+as listed in the [REQUIRE](REQUIRE) file will be copied to the package directory
+and configured for your system. This will take a while, but the results will be
+persistent across invocations (on the condition you keep your package volume or
+directory intact).
 
-```
-INFO: Performing first time setup
-...
-INFO: Done! Now commit this using:
-      $ docker commit CONTAINER_ID local/juliagpu
-      and use the local/juliagpu tag instead.
-```
-
-Commit and use that result as prompted:
-
-```
-$ docker commit CONTAINER_ID local/juliagpu
-$ docker run --runtime=nvidia -it local/juliagpu
-julia> ...
-```
+The container starts in `/data`, which you can mount in order to access files
+from your host.
 
 Note that the container has Julia as entry point, and thus can be used as if it were a
-regular binary:
+regular binary (especially powerful in combination with `$PWD` mounted as `/data`):
 
 ```
-$ alias juliagpu='docker run --runtime=nvidia -it local/juliagpu'
+$ alias juliagpu='docker run --runtime=nvidia -v $PKG:/pkg -v $PWD:/data -it maleadt/juliagpu'
+
 $ juliagpu -e 'println("Hello, World!")'
+Hello, World!
+
+$ echo 'println("Hello, World!")' > test.jl
+$ juliagpu test.jl
 Hello, World!
 ```
 
