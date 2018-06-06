@@ -3,10 +3,7 @@ JuliaGPU docker recipes
 
 *Docker recipes for Julia builds with JuliaGPU packages.*
 
-**Build status**: [![][buildbot-img]][buildbot-url]
-
-[buildbot-img]: http://ci.maleadt.net/shields/build.php?builder=Docker&branch=latest
-[buildbot-url]: http://ci.maleadt.net/shields/url.php?builder=Docker&branch=latest
+**Deprecation notice**: With Julia 0.7/1.0, installability of the GPU stack has improved, and this image isn't worth maintaining anymore.
 
 For a list of included packaged, refer to the [REQUIRE](REQUIRE) file.
 
